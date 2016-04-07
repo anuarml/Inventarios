@@ -1,12 +1,12 @@
 'use strict';
 
 // Declare app level module which depends on views, and components
-angular.module('posApp', [
+angular.module('InvApp', [
   'ngRoute',
   'ui.bootstrap',
   'ui.grid',
-  'posApp.item'
+  'InvApp.Auth'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.otherwise({redirectTo: '/item/list'});
+  $routeProvider.otherwise({redirectTo: '/auth/login'});
 }]);
