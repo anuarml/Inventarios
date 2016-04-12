@@ -1,8 +1,8 @@
 'use strict';
 
-describe('Module: InvApp.item.', function() {
+describe('Module: InvApp.auth.', function() {
   
-  beforeEach(module('InvApp.item'));
+  beforeEach(module('InvApp.auth'));
 
   var $controller, $httpBackend, $rootScope;
 
@@ -13,7 +13,7 @@ describe('Module: InvApp.item.', function() {
   	$rootScope = _$rootScope_;
   }));
 
-  describe('ItemController', function(){
+  describe('AuthController', function(){
 
   	var itemController, $scope;
 
@@ -30,7 +30,7 @@ describe('Module: InvApp.item.', function() {
 						}]);
   	});
 
-    it('should fill $scope.items with the data in /item/data/item-list.json', function(){
+    it('authenticate the user by redirecting him to the main page', function(){
 
     	expect($scope.items).toBeUndefined();
     	$httpBackend.flush();

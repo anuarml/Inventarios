@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('posApp.item', ['ngRoute'])
+angular.module('InvApp.item', ['ngRoute'])
 
 	.constant('ITEM_ROUTES',{
 		'LIST':'/item/list',

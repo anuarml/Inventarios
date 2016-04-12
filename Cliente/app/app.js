@@ -4,8 +4,9 @@
 angular.module('InvApp', [
   'ngRoute',
   'ui.bootstrap',
-  'ui.grid',
-  'InvApp.Auth'
+  'InvApp.Auth',
+  'InvApp.item',
+  'InvApp.inv'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/auth/login'});

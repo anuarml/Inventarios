@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('posApp.item')
+angular.module('InvApp.item')
 	
 	.factory('Item', ['$http','$q','$filter', function($http,$q,$filter){
 		

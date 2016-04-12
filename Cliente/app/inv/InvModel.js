@@ -1,33 +1,19 @@
 "use strict";
 
-angular.module('InvApp.auth')
+angular.module('InvApp.inv')
 	
-	.factory('Auth', ['$http','$q', function($http,$filter){
+	.factory('Inv', ['$http','$q','$filter', function($http,$q,$filter){
 		
-		var authToken;
+		var inv;
 
-		function authenticate(auth){
-			var deferred = $q.defer();
+		function _fetch(deferred){
 
-			$http.get('/api/auth',{params:{usuario:auth.usuario,contrasena:auth.passWord}})
+			console.log('fetching data..');
+
+			$http.get('/inv/data/inv-list.json')
 				.then(function(response){
-					authToken = response.data;
-					auth.resolve(authToken);
-				}, function(response){
-					auth.reject(response.status,response.statusText)
-				});
-
-			return auth.promise;
-		}
-
-		/*function _fetch(usuario){
-
-			var deferred = $q.defer();
-
-			$http.get('/api/auth',{params:{usuario:usuario.usuario,contrasena:usuario.passWord}})
-				.then(function(response){
-					items = response.data;
-					deferred.resolve(items);
+					inv = response.data;
+					deferred.resolve(inv);
 					console.log('data fetched');
 				}, function(response){
 					deferred.reject(response.status,response.statusText);
@@ -39,17 +25,17 @@ angular.module('InvApp.auth')
 		function all(){
 			var deferred = $q.defer();
 
-			if(angular.isUndefined(items)){
+			if(angular.isUndefined(inv)){
 				_fetch(deferred);
 			}
 			else{
-				deferred.resolve(items);
+				deferred.resolve(inv);
 			}
 
 			return deferred.promise;
 		}
 
-		function create(newItem){
+		/*function create(newItem){
 			items.push(newItem);
 			//save in db. If an error ocur, delete the item from items array.
 		}
@@ -73,6 +59,6 @@ angular.module('InvApp.auth')
 		}*/
 
 		return {
-			authenticate:authenticate
+			all:all
 		};
 	}]);

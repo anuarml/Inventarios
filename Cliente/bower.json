@@ -11,7 +11,8 @@
     "angular-loader": "~1.4.0",
     "angular-mocks": "~1.4.0",
     "html5-boilerplate": "~5.2.0",
-    "bootstrap": "^3.3.6"
+    "bootstrap": "^3.3.6",
+    "angular-smart-table": "^2.1.8"
   },
   "devDependencies": {}
 }

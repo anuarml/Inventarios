@@ -1,0 +1,35 @@
+
+<div class="row">
+	<div class="col-sm-offset-0 col-sm-12">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-sm-offset-0 col-sm-12">
+						<div class="table-container">
+							<table st-table="inv" st-safe-src="invSafe" class="table table-striped">
+								<thead>
+								<tr>
+								  <th lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in columns" st-sort="{{col.name}}"><input ng-if="col.filter" st-search="grupo" placeholder="{{col.name}}" class="input-sm form-control" type="search"/> {{col.name}} </th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr ng-repeat="item in inv">
+								  <td ng-repeat="col in columns">{{item[col.name]}}</td>
+								</tr>
+								</tbody>
+								<tfoot>
+									<tr >
+										<td colspan="10" class="text-center">
+											<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
+										</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div ng-show="isLoading" class="loading-indicator"></div>

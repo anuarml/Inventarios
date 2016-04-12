@@ -26,10 +26,13 @@ angular.module('InvApp.Auth', ['ngRoute'])
 	.controller('AuthController', ['$scope','$location',/*'Auth',*/'AUTH_ROUTES',
 		function($scope,$location,/*Auth,*/AUTH_ROUTES){
 
-		/*$scope.authenticate = function(auth){
-			Auth.authenticate(auth);
+		$scope.authenticate = function(auth){
+			//Auth.authenticate(auth);
+			alert('Paso');
 			$location.path(AUTH_ROUTES.SUCCESS)
-		}*/
+		}
+
+		//$scope.endSession = function(token){}
 
 		$scope.lang = 'es';
 	}]);
