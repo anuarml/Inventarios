@@ -1,35 +1,78 @@
-
 <div class="row">
 	<div class="col-sm-offset-0 col-sm-12">
+
 		<div class="panel panel-default">
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-sm-offset-0 col-sm-12">
-						<div class="table-container">
-							<table st-table="inv" st-safe-src="invSafe" class="table table-striped">
-								<thead>
-								<tr>
-								  <th lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in columns" st-sort="{{col.name}}"><input ng-if="col.filter" st-search="grupo" placeholder="{{col.name}}" class="input-sm form-control" type="search"/> {{col.name}} </th>
-								</tr>
-								</thead>
-								<tbody>
-								<tr ng-repeat="item in inv">
-								  <td ng-repeat="col in columns">{{item[col.name]}}</td>
-								</tr>
-								</tbody>
-								<tfoot>
-									<tr >
-										<td colspan="10" class="text-center">
-											<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="5"></div>
-										</td>
-									</tr>
-								</tfoot>
-							</table>
+					<form role="form">
+						<div class="row">
+							<div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-0 col-md-3 col-lg-3">
+									<label class="sr-only" for="Codigo">Codigo</label>
+									<div>
+										<input class="form-control" id="Codigo" name="Codigo" type="text" placeholder="Codigo" tabindex="1" ng-model="filters.Codigo"/>
+									</div>
+							</div>
+							<div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-0 col-md-3 col-lg-3">
+									<label class="sr-only" for="Descripcion">Descripcion</label>
+									<div>
+										<input class="form-control" id="Descripcion" name="Descripcion" type="text" placeholder="Descripcion" tabindex="2" ng-model="filters.Descripcion"/>
+									</div>
+							</div>
+						<!--</div>
+						<div class="row">-->
+							<div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-0 col-md-3 col-lg-3">
+									<label class="sr-only" for="Fabricante">Fabricante</label>
+									<div>
+										<input class="form-control" id="Fabricante" name="Fabricante" type="text" placeholder="Fabricante" tabindex="4" ng-model="filters.Fabricante"/>
+									</div>
+							</div>
+							<div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-0 col-md-3 col-lg-3">
+									<label class="sr-only" for="Empresa">Empresa</label>
+									<div>
+										<select class="form-control" id="Empresa" name="Empresa" tabindex="5" ng-model="filters.Empresa">
+										  <option value="{{db}}" ng-repeat="db in dataBases">{{db}}</option>
+										</select>
+									</div>					
+							</div>
 						</div>
+						<div class="row">
+							<div class="col-xs-offset-2 col-xs-8 col-sm-offset-4 col-sm-4">
+								<button type="submit" class="btn btn-primary btn-block" tabindex="6" ng-click="searchInv(filters)">Buscar</button>
+							</div>
+						</div>		
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<div class="row">
+					<div class="table-container">
+						<table st-table="inv" st-safe-src="invSafe" class="table table-striped">
+							<thead>
+							<tr>
+							  <th lr-drag-src="headers" lr-drop-target="headers" ng-repeat="col in columns" st-sort="{{col.name}}"> {{col.name}} <input ng-if="col.filter" st-search="{{col.name}}" placeholder="{{col.name}}" class="input-sm form-control" type="search"/></th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr ng-repeat="item in inv">
+							  <td ng-repeat="col in columns">{{item[col.name]}}</td>
+							</tr>
+							</tbody>
+							<tfoot>
+								<tr >
+									<td colspan="10" class="text-center">
+										<div st-pagination="" st-items-by-page="itemsByPage" st-displayed-pages="displayedPages"></div>
+									</td>
+								</tr>
+							</tfoot>
+						</table>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
 <div ng-show="isLoading" class="loading-indicator"></div>

@@ -20,10 +20,13 @@ angular.module('InvApp.inv', ['ngRoute','smart-table','lrDragNDrop'])
 		//var code = $routeParams.code;
 
 		Inv.all().then(function(inv){
+			$scope.dataBases=['Alumayab','Argentum','Herramax','La Viga','Alumik','Valsi','Mayalum','Alpina']
 			$scope.columns=[{name:'Articulo',filter:false},{name:'Almacen',filter:false},{name:'Disponible',filter:false},{name:'Rama',filter:false},{name:'Descripcion',filter:false},{name:'Grupo',filter:true},{name:'Categoria',filter:false},{name:'Familia',filter:true},{name:'Linea',filter:true},{name:'Fabricante',filter:true}];
+			$scope.filters=[{Codigo:'',Descripcion:'',Fabricante:'',Empresa:''}]
 			$scope.inv = inv;
 			$scope.invSafe = angular.copy(inv);
 			$scope.itemsByPage=25;
+			$scope.displayedPages=5;
 			//if(angular.isDefined(code)){
 			//$scope.newInv = angular.copy(Inv.get(code));
 			//$scope.isEdit = true;
@@ -31,6 +34,11 @@ angular.module('InvApp.inv', ['ngRoute','smart-table','lrDragNDrop'])
 		}, function(msg){
 			console.error(msg);
 		});
+
+		$scope.search = function(filters){
+			Inv.search(filters.Codigo,filters.Descripcion,filters.Fabricante,filters.Empresa);
+			//$location.path(ITEM_ROUTES.LIST);
+		}
 
 		$scope.lang = 'es';
 	}]);
