@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'tho',
+        'guard' => 'intelisis',
         'passwords' => 'users',
     ],
 
@@ -46,9 +46,9 @@ return [
             'provider' => 'users',
         ],
 
-        'tho' => [
-            'driver' => 'authtoken',
-            'provider' => 'users',
+        'intelisis' => [
+            'driver' => 'session',
+            'provider' => 'intelisis_users',
         ],
     ],
 
@@ -75,10 +75,10 @@ return [
             'model' => App\User::class,
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+         'intelisis_users' => [
+            'driver' => 'intelisis',
+            'model' => App\User::class,
+        ],
     ],
 
     /*

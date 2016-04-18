@@ -10,28 +10,10 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-use App\User;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::post('auth', 'Auth\AuthController@postLogin');
 
-Route::get('/test', function () {
+Route::get('usuario/empresas', 'User\UserController@getEmpresas');
 
-	//$inputKey = Auth::guard()->inputKey;
+Route::post('disponible', 'Inv\InvController@getArtExistencia');
 
-	//$authenticated = Auth::guard('tho')->validate(['authToken'=>'token']);
-
-	//$authenticated = User::where('Usuario','ADMIN')->get(['Usuario','ThoWAuthToken'])->first();
-
-	//$authenticated->ThoWAuthToken = Illuminate\Support\Str::random(60);
-
-    //$authenticated->save();
-
-	$authenticated = Auth::attempt(['Usuario'=>'ADMIN','Contrasena'=>'5509a482cd11e68477167e896e7b9237','Estatus'=>'ALTA']);
-
-	//dd($authenticated->first()->Usuario);
-    
-	return response()->json($authenticated);
-    //return view('welcome');
-});

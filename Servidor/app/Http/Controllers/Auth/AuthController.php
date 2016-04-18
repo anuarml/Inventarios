@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use JWTAuth;
 use App\User;
 use Validator;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\ThrottlesLogins;
-use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+//use Illuminate\Foundation\Auth\ThrottlesLogins;
+//use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
 class AuthController extends Controller
 {
@@ -21,14 +23,21 @@ class AuthController extends Controller
     |
     */
 
-    use AuthenticatesAndRegistersUsers, ThrottlesLogins;
-
+    //use AuthenticatesAndRegistersUsers, ThrottlesLogins;
     /**
-     * Where to redirect users after login / registration.
+     * The name of the field in the login form containing the username.
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $username = 'Usuario';
+
+    /**
+     * The name of the field in the login form containing the password.
+     * Must contain the word 'password'.
+     *
+     * @var string
+     */
+    protected $password = 'ThoWpassword';
 
     /**
      * Create a new authentication controller instance.
@@ -37,36 +46,87 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+       // $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Handle a login request to the application.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function postLogin(Request $request)
     {
-        return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
+        return $this->login($request);
+    }
+
+    /**
+     * Handle a login request to the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function login(Request $request)
+    {
+        //$this->validateLogin($request);
+
+        $credentials = $this->getCredentials($request);
+
+        try {
+            // attempt to verify the credentials and create a token for the user
+            if (! $token = JWTAuth::attempt($credentials)) {
+                return response()->json(['error' => 'invalid_credentials'], 401);
+            }
+        } catch (JWTException $e) {
+            // something went wrong whilst attempting to encode the token
+            return response()->json(['error' => 'could_not_create_token'], 500);
+        }
+
+        // all good so return the token
+        return response()->json(compact('token'));
+    }
+
+    /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     */
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->loginUsername() => 'required', $this->loginPassword() => 'required',
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Get the login username to be used by the controller.
      *
-     * @param  array  $data
-     * @return User
+     * @return string
      */
-    protected function create(array $data)
+    public function loginUsername()
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        return property_exists($this, 'username') ? $this->username : 'email';
+    }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginPassword()
+    {
+        return property_exists($this, 'password') ? $this->password : 'password';
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function getCredentials(Request $request)
+    {
+        return $request->only($this->loginUsername(), $this->loginPassword());
     }
 }
