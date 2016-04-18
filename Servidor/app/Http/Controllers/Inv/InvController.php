@@ -50,7 +50,20 @@ class InvController extends Controller
         
         $artDisponible = ArtDisponible::getDisponible($articulo,$descripcion,$fabricante,$empresa,$usuario);
 
-        return response()->json(compact('artDisponible'));
+        if( (array)$artDisponible === $artDisponible ) {
+
+            if(count($artDisponible)==0) {
+                $status = 200;
+            } else if($artDisponible[0]->Status) {
+                $status = $artDisponible[0]->Status;
+            } else {
+                $status = 500;
+            }
+        } else {
+            $status = 500;
+        }
+
+        return response()->json(compact('artDisponible'),$status);
     }
 
 }

@@ -16,5 +16,5 @@ Route::post('auth/logout', 'Auth\AuthController@logout');
 
 Route::get('usuario/empresas', 'User\UserController@getEmpresas');
 
-Route::post('disponible', 'Inv\InvController@getArtExistencia');
+Route::post('inv/disponible', 'Inv\InvController@getArtExistencia');
 
