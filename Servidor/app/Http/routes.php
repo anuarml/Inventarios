@@ -11,7 +11,8 @@
 |
 */
 
-Route::post('auth', 'Auth\AuthController@postLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::post('auth/logout', 'Auth\AuthController@logout');
 
 Route::get('usuario/empresas', 'User\UserController@getEmpresas');
 

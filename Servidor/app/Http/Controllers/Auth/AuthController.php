@@ -46,7 +46,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-       // $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+       $this->middleware('jwt.auth', ['only' => 'logout']);
     }
 
     /**
@@ -128,5 +128,12 @@ class AuthController extends Controller
     protected function getCredentials(Request $request)
     {
         return $request->only($this->loginUsername(), $this->loginPassword());
+    }
+
+    /**/
+    public function logout(){
+
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response('Ok');
     }
 }
