@@ -3,7 +3,7 @@
 namespace App\Providers;
 
 use Auth;
-use App\Guards\AuthTokenGuard;
+use App\Auth\IntelisisUserProvider;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -28,11 +28,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
 
-        //
-        Auth::extend('authtoken', function($app, $name, array $config) {
-            // Return an instance of Illuminate\Contracts\Auth\Guard...
+        // Register Intelisis auth provider
+        Auth::provider('intelisis',function()
+        {
+            // Get the Intelisis guard
+            $guard = 'intelisis';//$this->app['config']['auth.defaults.guard'];
+            $guardConfig = $this->app['config']["auth.guards.{$guard}"];
+            $guardProvider = $guardConfig['provider'];
+            $model = $this->app['config']["auth.providers.{$guardProvider}.model"];
 
-            return new AuthTokenGuard(Auth::createUserProvider($config['provider']), $app['request']);
+            return new IntelisisUserProvider($this->app['hash'], $model);
         });
     }
 }
