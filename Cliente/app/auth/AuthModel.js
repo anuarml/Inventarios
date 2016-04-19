@@ -12,12 +12,12 @@ angular.module('InvApp.auth')
 			$http.get('/api/auth',{params:{usuario:auth.usuario,contrasena:auth.passWord}})
 				.then(function(response){
 					authToken = response.data;
-					auth.resolve(authToken);
+					deferred.resolve(authToken);
 				}, function(response){
-					auth.reject(response.status,response.statusText)
+					deferred.reject(response.status,response.statusText)
 				});
 
-			return auth.promise;
+			return deferred.promise;
 		}
 
 		/*function _fetch(usuario){

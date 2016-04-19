@@ -35,6 +35,21 @@ angular.module('InvApp.inv')
 			return deferred.promise;
 		}
 
+		function searchInv(filters){
+			var deferred = $q.defer();
+			//console.log(filters);
+			$http.get('/api/inv/disponible',{params:{Codigo:filters.Codigo,Descripcion:filters.Descripcion,Fabricante:filters.Fabricante,Empresa:filters.Empresa}})
+				.then(function(response){
+					inv = response.data;
+					deferred.resolve(inv);
+				}, function(response){
+					deferred.reject(response.status,response.statusText)
+				});
+
+			return deferred.promise;
+		}
+
+
 		/*function create(newItem){
 			items.push(newItem);
 			//save in db. If an error ocur, delete the item from items array.
@@ -59,6 +74,7 @@ angular.module('InvApp.inv')
 		}*/
 
 		return {
-			all:all
+			all:all,
+			searchInv:searchInv
 		};
 	}]);
