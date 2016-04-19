@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Auth;
 use JWTAuth;
 use App\User;
 use Validator;
@@ -82,6 +83,10 @@ class AuthController extends Controller
             // something went wrong whilst attempting to encode the token
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+
+        $user = Auth::user();
+        $customClaims = ['name' => $user->Nombre];
+        $token = JWTAuth::fromUser($user, $customClaims);
 
         // all good so return the token
         return response()->json(compact('token'));
