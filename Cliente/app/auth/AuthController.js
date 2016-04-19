@@ -23,15 +23,17 @@ angular.module('InvApp.Auth', ['ngRoute'])
 			});
 	}])
 
-	.controller('AuthController', ['$scope','$location',/*'Auth',*/'AUTH_ROUTES',
-		function($scope,$location,/*Auth,*/AUTH_ROUTES){
+	.controller('AuthController', ['$scope','$location',/*'Auth',*/'AUTH_ROUTES','$rootScope',
+		function($scope,$location,/*Auth,*/AUTH_ROUTES,$rootScope){
 
 		$scope.authenticate = function(auth){
 			//Auth.authenticate(auth);
 			alert('Paso');
 			$location.path(AUTH_ROUTES.SUCCESS)
-		}
+		};
 
+		$rootScope.isLogged = true;
+		console.log($rootScope.isLogged);
 		//$scope.endSession = function(token){}
 
 		$scope.lang = 'es';
