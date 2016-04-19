@@ -9,7 +9,7 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	.config(['$routeProvider','INV_ROUTES',function($routeProvider,INV_ROUTES) {
 		$routeProvider
 			.when(INV_ROUTES.LIST, {
-				templateUrl:'inv/partials/index.html',
+				templateUrl:'inv/partials/inv-list.html',
 				controller:'InvController'
 			});
 	}])
@@ -18,8 +18,10 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 		function($scope,$http,$location,Inv,INV_ROUTES,$compile){
 
 		//var code = $routeParams.code;
+		$scope.dataBases=['Alumayab','Argentum','Herramax','La Viga','Alumik','Valsi','Mayalum','Alpina'];
+		$scope.filters=[{Codigo:'',Descripcion:'',Fabricante:'',Empresa:''}];
 		$scope.workspaces = [];
-	    $scope.workspaces.push({ name: 'Workspace 1' });
+	    $scope.workspaces.push({ name: 'Inventarios' });
 
 	    $scope.changeCurrentWorkspace = function (wk) {
 	        $scope.currentWorkspace = wk;
@@ -27,10 +29,6 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 
 		Inv.all().then(function(inv){
 			$scope.inv = inv;
-			//$scope.refresh();
-			/*$scope.$apply(function(){
-        		$scope.inv = inv;
-            });*/
 
             $scope.workspaces[0].bsTableControl.options = {
 	                data: $scope.inv,
@@ -45,17 +43,19 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                pageList: [5, 10, 25, 50, 100, 200],
 	                search: true,
 	                showColumns: true,
-	                showRefresh: true,
+	                showRefresh: false,
 	                minimumCountColumns: 2,
 	                clickToSelect: false,
 	                showToggle: true,
 	                maintainSelected: true,
+	                filterControl: true,
 	                columns: [{
 	                    field: 'Articulo',
 	                    title: 'Articulo',
-	                    align: 'right',
+	                    align: 'center',
 	                    valign: 'bottom',
-	                    sortable: true
+	                    sortable: true,
+	                    search: true
 	                }, {
 	                    field: 'Disponible',
 	                    title: 'Disponible',
@@ -71,7 +71,7 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                }, {
 	                    field: 'Descripcion',
 	                    title: 'Descripcion',
-	                    align: 'left',
+	                    align: 'center',
 	                    valign: 'top',
 	                    sortable: true
 	                }, {
@@ -80,8 +80,36 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                    align: 'center',
 	                    valign: 'middle',
 	                    clickToSelect: false,
+	                    filterControl: 'input'
 	                    //formatter: flagFormatter,
 	                    // events: flagEvents
+	                }, {
+	                    field: 'Categoria',
+	                    title: 'Categoria',
+	                    align: 'center',
+	                    valign: 'bottom',
+	                    sortable: true
+	                }, {
+	                    field: 'Familia',
+	                    title: 'Familia',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
+	                }, {
+	                    field: 'Linea',
+	                    title: 'Linea',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
+	                }, {
+	                    field: 'Fabricante',
+	                    title: 'Fabricante',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
 	                }]
 	            };
             /*if (!$scope.$$phase) $scope.$apply(function(){
@@ -141,8 +169,7 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 
 		$scope.workspaces.forEach(function (wk,index) {
 	        var colData = {workspace: wk.name};
-	        //wk.rows = makeRandomRows(colData);
-	        
+
 	        wk.bsTableControl = {
 	            options: {
 	                data: [],
@@ -157,17 +184,19 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                pageList: [5, 10, 25, 50, 100, 200],
 	                search: true,
 	                showColumns: true,
-	                showRefresh: true,
+	                showRefresh: false,
 	                minimumCountColumns: 2,
 	                clickToSelect: false,
 	                showToggle: true,
 	                maintainSelected: true,
+	                filterControl: true,
 	                columns: [{
 	                    field: 'Articulo',
 	                    title: 'Articulo',
-	                    align: 'right',
+	                    align: 'center',
 	                    valign: 'bottom',
-	                    sortable: true
+	                    sortable: true,
+	                    search: true
 	                }, {
 	                    field: 'Disponible',
 	                    title: 'Disponible',
@@ -183,7 +212,7 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                }, {
 	                    field: 'Descripcion',
 	                    title: 'Descripcion',
-	                    align: 'left',
+	                    align: 'center',
 	                    valign: 'top',
 	                    sortable: true
 	                }, {
@@ -192,29 +221,45 @@ angular.module('InvApp.inv', ['ngRoute',/*,'smart-table','lrDragNDrop',*/'bsTabl
 	                    align: 'center',
 	                    valign: 'middle',
 	                    clickToSelect: false,
+	                    filterControl: 'input'
 	                    //formatter: flagFormatter,
 	                    // events: flagEvents
+	                }, {
+	                    field: 'Categoria',
+	                    title: 'Categoria',
+	                    align: 'center',
+	                    valign: 'bottom',
+	                    sortable: true
+	                }, {
+	                    field: 'Familia',
+	                    title: 'Familia',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
+	                }, {
+	                    field: 'Linea',
+	                    title: 'Linea',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
+	                }, {
+	                    field: 'Fabricante',
+	                    title: 'Fabricante',
+	                    align: 'center',
+	                    valign: 'top',
+	                    sortable: true,
+	                    filterControl: 'input'
 	                }]
 	            }
 	        };
-	        /*function flagFormatter(value, row, index) {
-	            return '<img src="' + row.flagImage + '"/>'
-	        }*/
-
 	    });
-		/*$scope.search = function(filters){
-			Inv.search(filters.Codigo,filters.Descripcion,filters.Fabricante,filters.Empresa);
+
+		$scope.searchInv = function(filters){
+			Inv.searchInv(filters);
 			//$location.path(ITEM_ROUTES.LIST);
 		}
-
-		$scope.loadData = function() {
-			$scope.inv = $scope.inv.slice(1,2);
-		}
-
-		$scope.lang = 'es';*/
-
-		
-
 
 	    //Select the workspace in document ready event
 	    $(document).ready(function () {

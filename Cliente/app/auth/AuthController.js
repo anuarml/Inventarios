@@ -56,8 +56,8 @@ angular.module('InvApp.Auth', ['ngRoute','angular-jwt'])
 	    });
 	}])
 
-	.controller('AuthController', ['$scope','$location','Auth','AUTH',
-		function($scope,$location,Auth,AUTH){
+	.controller('AuthController', ['$scope','$rootScope','$location','Auth','AUTH',
+		function($scope,$rootScope,$location,Auth,AUTH){
 
 		$scope.newAuth={};
 
@@ -74,4 +74,7 @@ angular.module('InvApp.Auth', ['ngRoute','angular-jwt'])
 		$scope.logout = function(){
 			Auth.logout();
 		}
+
+		$rootScope.isLogged = true;
+		console.log($rootScope.isLogged);
 	}]);
