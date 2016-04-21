@@ -33,6 +33,9 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 	// Valor inicial de los filtros de busqueda
 	$scope.filters={articulo:'',descripcion:'',fabricante:'',empresa:''};
 
+	// Search button initital state
+	$scope.isSearching = false;
+
 	// Obtiene el usuario atenticado
 	var user = Auth.getUser();
 
@@ -54,13 +57,17 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 
 	// Realiza la consulta del disponible en inventario
 	$scope.searchInv = function(filters){
+		$scope.isSearching = true;
+
 		Inv.search(filters).then(function(inv){
 			$scope.bsTableControl.setData(inv);
+			$scope.isSearching = false;
 		}, function(error){
 			notification.title = 'No se pudo completar la búsqueda';
             notification.error = true;
             notification.setMessage(error);
             notificationOptions.open();
+            $scope.isSearching = false;
 		});
 	};
 

@@ -76,8 +76,8 @@ angular.module('InvApp.Auth')
     this.getToken = getToken;
 
 
-    this.$get = ['$http', '$q', 'jwtHelper', 'AUTH', 'User', 'APP',
-        function($http, $q, jwtHelper, AUTH, User, APP){
+    this.$get = ['$http', '$q', 'jwtHelper', 'AUTH', 'User', 'APP_SERVICE', 
+        function($http, $q, jwtHelper, AUTH, User, APP_SERVICE){
         
         var user;
 
@@ -90,7 +90,7 @@ angular.module('InvApp.Auth')
                     }
                 };
 
-            $http.post(APP.SERVICE.SERVER+AUTH.ROUTES.SERVICE_LOGIN, content, config)
+            $http.post(APP_SERVICE.SERVER+AUTH.ROUTES.SERVICE_LOGIN, content, config)
                 .then(function(response){
                     login(response.data.token);
                     deferred.resolve();
@@ -105,7 +105,7 @@ angular.module('InvApp.Auth')
         function logout() {
             var deferred = $q.defer();
 
-            $http.post(APP.SERVICE.SERVER+AUTH.ROUTES.SERVICE_LOGOUT)
+            $http.post(APP_SERVICE.SERVER+AUTH.ROUTES.SERVICE_LOGOUT)
                 .then(function(response){
                     setToken(null);
                     setUser(null);

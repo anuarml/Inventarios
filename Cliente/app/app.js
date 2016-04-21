@@ -5,6 +5,7 @@ angular.module('InvApp', [
   'ngRoute',
   'ui.bootstrap',
   'jcs-autoValidate',
+  'angular-ladda',
   'InvApp.BsTable',
   'InvApp.Modal',
   'InvApp.Auth',
@@ -14,9 +15,6 @@ angular.module('InvApp', [
 .constant('APP', {
 	'ROUTES':{
 		'HOME':'/inv/list'
-	},
-	'SERVICE':{
-		'SERVER': 'http://192.168.96.80/inventarios/api'
 	}
 })
 .config(['$routeProvider','APP', function($routeProvider, APP) {

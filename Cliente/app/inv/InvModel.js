@@ -2,14 +2,14 @@
 
 angular.module('InvApp.inv')
 	
-	.factory('Inv', ['$http', '$q', '$filter', 'BsTableHelper', 'INV', 'APP', function($http, $q, $filter, BsTableHelper, INV,APP){
+	.factory('Inv', ['$http', '$q', '$filter', 'BsTableHelper', 'INV', 'APP_SERVICE', function($http, $q, $filter, BsTableHelper, INV, APP_SERVICE){
 		
 		var inv, bsTableControl;
 
 		function _fetch(deferred, filters){
             var config = {headers: {'Content-Type': 'application/json'}};
 
-            $http.post(APP.SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: filters}, config)
+            $http.post(APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: filters}, config)
 
                 .then(function(response){
                     inv = response.data.artDisponible;

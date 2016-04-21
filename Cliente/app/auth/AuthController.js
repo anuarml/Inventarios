@@ -41,7 +41,6 @@ angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
     .run(['$rootScope', '$location','APP', 'AUTH', 'Auth', function ($rootScope, $location, APP, AUTH, Auth) {
 
         $rootScope.$on('$routeChangeStart', function (event) {
-            console.log('route change');
             if ( !Auth.isPublicRoute($location.path()) && !Auth.isLogged() ) {
                 event.preventDefault();
                 $location.path(AUTH.ROUTES.LOGIN);
@@ -64,15 +63,22 @@ angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
 
         $scope.newAuth={};
 
+        // Loggin button initial state
+        $scope.isLoggin = false;
+
         $scope.authenticate = function(auth){
+            $scope.isLoggin = true;
+
             Auth.authenticate(auth).then(function(){
                 $scope.newAuth={};
                 $location.path(APP.ROUTES.HOME);
+                $scope.isLoggin = false;
             },function(error){
                 notification.title = 'No se pudo iniciar sesión';
                 notification.error = true;
                 notification.setMessage(error);
                 notificationOptions.open();
+                $scope.isLoggin = false;
             });
         }
     }]);

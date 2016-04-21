@@ -73,7 +73,7 @@ angular.module('InvApp.Modal',[])
         this.notification = new Notification();
 
         this.animation = true;
-        this.templateUrl = '/common/modals/modal-notification.html';
+        this.templateUrl = 'common/modals/modal-notification.html';
         this.controller = 'NotificationModalController';
         this.size = 'md';
         this.resolve = {

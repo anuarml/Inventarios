@@ -7,7 +7,7 @@ angular.module('InvApp.User',[])
 		}
 	})
 	
-	.factory('User', ['$http', '$q', 'USER','APP',function($http, $q, USER, APP){
+	.factory('User', ['$http', '$q', 'USER', 'APP_SERVICE',function($http, $q, USER, APP_SERVICE){
 		
 		function User (username, name) {
 			this.username = username;
@@ -36,7 +36,7 @@ angular.module('InvApp.User',[])
                     }
                 };
 
-			$http.get(APP.SERVICE.SERVER+USER.ROUTES.SERVICE_EMPRESAS,config)
+			$http.get(APP_SERVICE.SERVER+USER.ROUTES.SERVICE_EMPRESAS,config)
 				.then(function(response){
 
 					deferred.resolve(response.data.empresas);
