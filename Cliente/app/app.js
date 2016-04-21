@@ -37,7 +37,7 @@ angular.module('InvApp', [
     'defaultErrorMessageResolver',
     function (defaultErrorMessageResolver) {
         // To change the root resource file path
-        defaultErrorMessageResolver.setI18nFileRootPath('bower_components/angular-auto-validate/dist/lang');
-        defaultErrorMessageResolver.setCulture('es-Co');
+        //defaultErrorMessageResolver.setI18nFileRootPath('bower_components/angular-auto-validate/dist/lang');
+        //defaultErrorMessageResolver.setCulture('es-Co');
     }
 ]);

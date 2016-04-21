@@ -67,10 +67,11 @@ angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
 
 		$scope.authenticate = function(auth){
 			Auth.authenticate(auth).then(function(){
+				console.log("entro");
 				$scope.newAuth={};
 				$location.path(APP.ROUTES.HOME);
 			},function(error){
-				
+				console.log("fallo");
 			});
 		}
 	}]);
