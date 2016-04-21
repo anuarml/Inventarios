@@ -96,7 +96,7 @@ angular.module('InvApp.Auth')
                     deferred.resolve();
                 }, function(response){
                     console.error(response.status, response.statusText);
-                    deferred.reject();
+                    deferred.reject(response);
                 });
 
             return deferred.promise;
@@ -109,10 +109,12 @@ angular.module('InvApp.Auth')
                 .then(function(response){
                     setToken(null);
                     setUser(null);
-                    deferred.resolve();
+                    deferred.resolve(response);
                 }, function(response){
+                    setToken(null);
+                    setUser(null);
                     console.error(response.status, response.statusText);
-                    deferred.reject();
+                    deferred.reject(response);
                 });
 
             return deferred.promise;

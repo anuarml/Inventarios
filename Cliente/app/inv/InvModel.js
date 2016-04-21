@@ -9,17 +9,11 @@ angular.module('InvApp.inv')
 		function _fetch(deferred, filters){
             var config = {headers: {'Content-Type': 'application/json'}};
 
-            console.log(filters);
-
             $http.post(INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: filters}, config)
                 .then(function(response){
                     inv = response.data.artDisponible;
 					deferred.resolve(inv);
                 }, function(error){
-                	if(error.status = 401){
-                		
-                	}
-
                     console.error(error.status, error.statusText);
                     deferred.reject(error);
                 });
