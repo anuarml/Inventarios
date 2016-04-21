@@ -24,8 +24,11 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 		});
 }])
 
-.controller('InvController', ['$scope', 'Inv', 'Auth',
-	function($scope, Inv, Auth) {
+.controller('InvController', ['$scope', 'NotificationModal', 'Inv', 'Auth',
+	function($scope, NotificationModal, Inv, Auth) {
+
+	var notificationOptions = NotificationModal.create();
+    var notification = notificationOptions.notification;
 
 	// Valor inicial de los filtros de busqueda
 	$scope.filters={articulo:'',descripcion:'',fabricante:'',empresa:''};
@@ -39,6 +42,11 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 		if(companies.length>0 && companies[0] && companies[0].Empresa){
 			$scope.filters.empresa = companies[0].Empresa;
 		}
+	}, function(error){
+		notification.title = 'No se pudieron obtener las empresas del usuario';
+        notification.error = true;
+        notification.setMessage(error);
+        notificationOptions.open();
 	})
 
 	// Establece las propiedades de la tabla
@@ -48,6 +56,11 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 	$scope.searchInv = function(filters){
 		Inv.search(filters).then(function(inv){
 			$scope.bsTableControl.setData(inv);
+		}, function(error){
+			notification.title = 'No se pudo completar la búsqueda';
+            notification.error = true;
+            notification.setMessage(error);
+            notificationOptions.open();
 		});
 	};
 

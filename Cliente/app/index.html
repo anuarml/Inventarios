@@ -47,7 +47,7 @@
           <li><a href="#">Page 3</a></li> -->
         </ul>
         <ul class="nav navbar-nav navbar-right" ng-controller="InvAppController"> 
-          <li ng-if="isLogged" ng-click="logout()"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</li>
+          <li ng-if="isLogged"><a href="#" ng-click="logout($event)"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</a></li>
         </ul>
       <!--   <ul class="nav navbar-nav navbar-right">
           <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -74,6 +74,7 @@
   <script src="bower_components/angular/angular.js"></script>
   <script src="bower_components/angular-route/angular-route.min.js"></script>
   <script src="bower_components/angular-jwt/dist/angular-jwt.min.js"></script>
+  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
   
   <script src="bower_components/bootstrap-table/dist/bootstrap-table.min.js"></script>
   <script src="bower_components/bootstrap-table/dist/extensions/angular/bootstrap-table-angular.min.js"></script>
@@ -81,10 +82,11 @@
   <script src="bower_components/bootstrap-table/dist/locale/bootstrap-table-es-MX.min.js"></script>
   <script src="bower_components/angular-auto-validate/dist/jcs-auto-validate.min.js"></script>
 
+  <script src="bs-table/BsTableHelper.js"></script>
+  <script src="common/modals/NotificationModal.js"></script>
   <script src="auth/AuthController.js"></script>
   <script src="auth/AuthModel.js"></script>
   <script src="auth/AuthInterceptor.js"></script>
-  <script src="bs-table/BsTableHelper.js"></script>
   <script src="inv/InvController.js"></script>
   <script src="inv/InvModel.js"></script>
   <script src="item/ItemController.js"></script>
