@@ -7,8 +7,8 @@ angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
 			'LOGIN':'/auth/login',
 			//'HOME':'/inv/list',
 
-			'SERVICE_LOGIN': 'http://localhost/inventarios/api/auth/login',
-			'SERVICE_LOGOUT': 'http://localhost/inventarios/api/auth/logout'
+			'SERVICE_LOGIN': '/auth/login',
+			'SERVICE_LOGOUT': '/auth/logout'
 		},
 		'HEADER': 'Authorization',
 		'TOKEN_NAME': 'auth_token',
