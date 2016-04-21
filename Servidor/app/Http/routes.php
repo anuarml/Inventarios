@@ -12,9 +12,13 @@
 */
 
 Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::options('auth/login', 'Auth\AuthController@postLogin');
+
 Route::post('auth/logout', 'Auth\AuthController@logout');
+Route::options('auth/logout', 'Auth\AuthController@logout');
 
 Route::get('usuario/empresas', 'User\UserController@getEmpresas');
+Route::options('usuario/empresas', 'User\UserController@getEmpresas');
 
 Route::post('inv/disponible', 'Inv\InvController@getArtExistencia');
-
+Route::options('inv/disponible', 'Inv\InvController@getArtExistencia');

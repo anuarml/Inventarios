@@ -2,31 +2,99 @@
 
 angular.module('InvApp.inv')
 	
-	.factory('Inv', ['$http','$q','$filter', function($http,$q,$filter){
+	.factory('Inv', ['$http', '$q', '$filter', 'BsTableHelper', 'INV', function($http, $q, $filter, BsTableHelper, INV){
 		
-		var inv;
+		var inv, bsTableControl;
 
-		function _fetch(deferred){
+		function _fetch(deferred, filters){
+            var config = {headers: {'Content-Type': 'application/json'}};
 
-			console.log('fetching data..');
+            console.log(filters);
 
-			$http.get('/inv/data/inv-list.json')
-				.then(function(response){
-					inv = response.data;
+            $http.post(INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: filters}, config)
+                .then(function(response){
+                    inv = response.data.artDisponible;
 					deferred.resolve(inv);
-					console.log('data fetched');
-				}, function(response){
-					deferred.reject(response.status,response.statusText);
-				});
+                }, function(error){
+                	if(error.status = 401){
+                		
+                	}
 
-			return deferred;
+                    console.error(error.status, error.statusText);
+                    deferred.reject(error);
+                });
+
+            return deferred;
 		}
 
-		function all(){
+		function createBsTableControl(){
+			var bsTableControl = BsTableHelper.createBsTableControl();
+			var options = bsTableControl.options;
+			var column;
+
+			options.filterControl = true;
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Articulo';
+			column.title = 'Artículo';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Disponible';
+			column.title = 'Disponible';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Descripcion';
+			column.title = 'Descripción';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Categoria';
+			column.title = 'Categoría';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Grupo';
+			column.title = 'Grupo';
+			column.filterControl = 'input';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Familia';
+			column.title = 'Familia';
+			column.filterControl = 'input';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Linea';
+			column.title = 'Línea';
+			column.filterControl = 'input';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Fabricante';
+			column.title = 'Fabricante';
+			column.filterControl = 'input';
+			options.columns.push(column);
+
+			return bsTableControl;
+		}
+
+		function getBsTableControl(){
+			//if(!bsTableControl){
+				bsTableControl = createBsTableControl();
+			//}
+
+			return bsTableControl;
+		}
+
+
+		function all(filters){
 			var deferred = $q.defer();
 
 			if(angular.isUndefined(inv)){
-				_fetch(deferred);
+				_fetch(deferred, filters);
 			}
 			else{
 				deferred.resolve(inv);
@@ -35,46 +103,17 @@ angular.module('InvApp.inv')
 			return deferred.promise;
 		}
 
-		function searchInv(filters){
+		function search(filters){
 			var deferred = $q.defer();
-			//console.log(filters);
-			$http.get('/api/inv/disponible',{params:{Codigo:filters.Codigo,Descripcion:filters.Descripcion,Fabricante:filters.Fabricante,Empresa:filters.Empresa}})
-				.then(function(response){
-					inv = response.data;
-					deferred.resolve(inv);
-				}, function(response){
-					deferred.reject(response.status,response.statusText)
-				});
+
+			_fetch(deferred, filters);
 
 			return deferred.promise;
 		}
 
-
-		/*function create(newItem){
-			items.push(newItem);
-			//save in db. If an error ocur, delete the item from items array.
-		}
-
-		function update(newItem){
-			var single_object = $filter('filter')(items, function (d) {return newItem && d.code === newItem.code;})[0];
-
-	    	// If you want to see the result, just check the log
-	    	angular.copy(newItem, single_object);
-			//items.push(item);
-			//save in db. If an error ocur, delete the item from items array.
-		}
-
-		function get(code){
-			var single_object = $filter('filter')(items, function (d) {return d.code === code;})[0];
-
-	    	// If you want to see the result, just check the log
-	    	return single_object;
-			//items.push(item);
-			//save in db. If an error ocur, delete the item from items array.
-		}*/
-
 		return {
 			all:all,
-			searchInv:searchInv
+			search:search,
+			getBsTableControl: getBsTableControl
 		};
 	}]);

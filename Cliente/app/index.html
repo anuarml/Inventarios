@@ -6,7 +6,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>POS</title>
+  <title>Inventarios</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" href="/common/img/cart.ico" />
@@ -46,8 +46,8 @@
           <!-- <li><a href="#">Page 2</a></li>
           <li><a href="#">Page 3</a></li> -->
         </ul>
-        <ul class="nav navbar-nav navbar-right"> 
-          <li ng-if="isLogged"><a href="#"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</a></li>
+        <ul class="nav navbar-nav navbar-right" ng-controller="InvAppController"> 
+          <li ng-if="isLogged" ng-click="logout()"><span class="glyphicon glyphicon-log-in"></span> Cerrar Sesión</li>
         </ul>
       <!--   <ul class="nav navbar-nav navbar-right">
           <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
@@ -61,11 +61,10 @@
     <!--[if lt IE 7]>
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div ng-view></div>
+  <div ng-view></div>
     
   </div>
 
-  <div>App v0.1</div>
   <!-- In production use:
   <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
   -->
@@ -81,17 +80,16 @@
   <script src="bower_components/bootstrap-table/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
   <script src="bower_components/bootstrap-table/dist/locale/bootstrap-table-es-MX.min.js"></script>
   
-  <!--<script src="lib/ui-bootstrap-1.2.4.min.js"></script>
-  <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
-  <script src="lib/lrDragNDrop.js"></script>
-  <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>-->
+
   <script src="auth/AuthController.js"></script>
-  <script src="auth/UserModel.js"></script>
   <script src="auth/AuthModel.js"></script>
+  <script src="auth/AuthInterceptor.js"></script>
+  <script src="bs-table/BsTableHelper.js"></script>
   <script src="inv/InvController.js"></script>
   <script src="inv/InvModel.js"></script>
   <script src="item/ItemController.js"></script>
   <script src="item/ItemModel.js"></script>
+  <script src="user/UserModel.js"></script>
 
   <script src="app.js"></script>
 </body>

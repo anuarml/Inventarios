@@ -29,7 +29,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['jwt.auth','jwt.refresh']);
+        $this->middleware(['cors','jwt.auth'/*,'jwt.refresh'*/]);
     }
 
     /**

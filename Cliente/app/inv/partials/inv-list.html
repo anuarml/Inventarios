@@ -6,13 +6,13 @@
                     <div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-1 col-md-4 col-lg-offset-1 col-lg-4">
                             <label class="sr-only" for="Codigo">Codigo</label>
                             <div>
-                                <input class="form-control" id="Codigo" name="Codigo" type="text" placeholder="Codigo" tabindex="1" ng-model="filters.Codigo"/>
+                                <input class="form-control" id="Codigo" name="Codigo" type="text" placeholder="Codigo" tabindex="1" ng-model="filters.articulo"/>
                             </div>
                     </div>
                     <div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-1 col-md-4 col-lg-offset-1 col-lg-4">
                             <label class="sr-only" for="Descripcion">Descripcion</label>
                             <div>
-                                <input class="form-control" id="Descripcion" name="Descripcion" type="text" placeholder="Descripcion" tabindex="2" ng-model="filters.Descripcion"/>
+                                <input class="form-control" id="Descripcion" name="Descripcion" type="text" placeholder="Descripcion" tabindex="2" ng-model="filters.descripcion"/>
                             </div>
                     </div>
                 <!--</div>
@@ -20,14 +20,15 @@
                     <div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-1 col-md-4 col-lg-offset-1 col-lg-4">
                             <label class="sr-only" for="Fabricante">Fabricante</label>
                             <div>
-                                <input class="form-control" id="Fabricante" name="Fabricante" type="text" placeholder="Fabricante" tabindex="4" ng-model="filters.Fabricante"/>
+                                <input class="form-control" id="Fabricante" name="Fabricante" type="text" placeholder="Fabricante" tabindex="4" ng-model="filters.fabricante"/>
                             </div>
                     </div>
                     <div class="form-group col-sm-offset-1 col-sm-4 col-md-offset-1 col-md-4 col-lg-offset-1 col-lg-4">
                             <label class="sr-only" for="Empresa">Empresa</label>
                             <div>
-                                <select class="form-control" id="Empresa" name="Empresa" tabindex="5" ng-model="filters.Empresa">
-                                  <option value="{{db}}" ng-repeat="db in dataBases">{{db}}</option>
+                                <select class="form-control" id="Empresa" name="Empresa" required="true" tabindex="5" ng-model="filters.empresa">
+                                  <option value="" selected="true" hidden="true">Empresa</option>
+                                  <option value="{{company.Empresa}}" ng-repeat="company in companies">{{company.Nombre}}</option>
                                 </select>
                             </div>                  
                     </div>
@@ -42,13 +43,6 @@
     </div>
 </div>
 <br />
-<!-- Workspaces nav -->
-<ul class="nav nav-tabs">
-    <li role="presentation" ng-repeat="wk in workspaces" ng-class="{active: currentWorkspace==wk}" ng-click="changeCurrentWorkspace(wk)"><a href="#">{{wk.name}}</a></li>
-</ul>
 
-<!-- Workspaces containers -->
-<div class="workspaceContainer" ng-repeat="wk in workspaces" ng-show="currentWorkspace==wk">
-    <table bs-table-control="wk.bsTableControl"></table>
-</div>
+<table bs-table-control="bsTableControl"></table>
 

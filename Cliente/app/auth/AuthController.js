@@ -1,49 +1,51 @@
 'use strict';
 
-angular.module('InvApp.Auth', ['ngRoute','angular-jwt'])
+angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
 
-	.constant('AUTH',{
+	.constant('AUTH', {
 		'ROUTES':{
 			'LOGIN':'/auth/login',
-			'LOGOUT':'/auth/logout',
-			'HOME':'/inv/list',
+			//'HOME':'/inv/list',
 
 			'SERVICE_LOGIN': 'http://localhost/inventarios/api/auth/login',
 			'SERVICE_LOGOUT': 'http://localhost/inventarios/api/auth/logout'
 		},
+		'HEADER': 'Authorization',
 		'TOKEN_NAME': 'auth_token',
 		'USER_PARAM_NAME': 'Usuario',
 		'PASS_PARAM_NAME': 'ThoWpassword'
 	})
 
-	.config(['$routeProvider','$httpProvider','jwtInterceptorProvider','AUTH',
-		function($routeProvider,$httpProvider,jwtInterceptorProvider,AUTH) {
+	.config(['$routeProvider', '$httpProvider', 'jwtInterceptorProvider', 'AUTH', 'AuthProvider','AuthInterceptorProvider',
+		function($routeProvider, $httpProvider, jwtInterceptorProvider, AUTH, AuthProvider,AuthInterceptorProvider) {
 
 		$routeProvider
 			.when(AUTH.ROUTES.LOGIN, {
 				templateUrl:'auth/partials/auth-login.html',
 				controller:'AuthController'
-			})
-			.when(AUTH.ROUTES.HOME, {
-				templateUrl:'inv/partials/inv-search.html',
-				controller:'AuthController'
-			})
-			.when(AUTH.ROUTES.LOGOUT, {
-				controller:'AuthController'
 			});
 
-		jwtInterceptorProvider.tokenGetter = function() {
-		  return localStorage.getItem(AUTH.TOKEN_NAME);
-		};
+		jwtInterceptorProvider.tokenGetter = ['config', function(config) {
+			if (config.url.substr(config.url.length - 5) == '.html') {
+      			return null;
+    		}
+			//var token = sessionStorage.getItem(AUTH.TOKEN_NAME);
+			var token = AuthProvider.getToken();
+		  	return token;
+		}];
+
+		AuthInterceptorProvider.setToken = AuthProvider.setToken;
+		AuthInterceptorProvider.getToken = AuthProvider.getToken;
+		AuthProvider.addPublicRoute(AUTH.ROUTES.LOGIN);
 		
 		$httpProvider.interceptors.push('jwtInterceptor');
+		$httpProvider.interceptors.push('AuthInterceptor');
 	}])
 
-	.run(['$rootScope', '$location', 'AUTH', 'Auth', function ($rootScope, $location, AUTH, Auth) {
-		Auth.addPublicRoute(AUTH.ROUTES.LOGIN);
+	.run(['$rootScope', '$location','APP', 'AUTH', 'Auth', function ($rootScope, $location, APP, AUTH, Auth) {
 
 	    $rootScope.$on('$routeChangeStart', function (event) {
-
+	    	console.log('changeroute');
 	        if ( !Auth.isPublicRoute($location.path()) && !Auth.isLogged() ) {
 	            event.preventDefault();
 	            $location.path(AUTH.ROUTES.LOGIN);
@@ -51,30 +53,24 @@ angular.module('InvApp.Auth', ['ngRoute','angular-jwt'])
 
 	        if( Auth.isLoginRoute($location.path()) && Auth.isLogged() ) {
 	        	event.preventDefault();
-	        	$location.path(AUTH.ROUTES.HOME);
+	        	$location.path(APP.ROUTES.HOME);
 	        }
+
+	        $rootScope.isLogged = Auth.isLogged();
 	    });
 	}])
 
-	.controller('AuthController', ['$scope','$rootScope','$location','Auth','AUTH',
-		function($scope,$rootScope,$location,Auth,AUTH){
+	.controller('AuthController', ['$scope', '$location', 'Auth', 'APP',
+		function($scope, $location, Auth, APP){
 
 		$scope.newAuth={};
 
 		$scope.authenticate = function(auth){
 			Auth.authenticate(auth).then(function(){
 				$scope.newAuth={};
-				console.log(Auth.getUser());
-				$location.path(AUTH.ROUTES.HOME);
+				$location.path(APP.ROUTES.HOME);
 			},function(error){
 				
 			});
 		}
-
-		$scope.logout = function(){
-			Auth.logout();
-		}
-
-		$rootScope.isLogged = true;
-		console.log($rootScope.isLogged);
 	}]);
