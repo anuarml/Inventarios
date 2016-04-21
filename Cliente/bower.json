@@ -14,7 +14,8 @@
     "bootstrap": "^3.3.6",
     "bootstrap-table": "^1.10.1",
     "jquery": "^2.2.3",
-    "angular-jwt": "^0.0.9"
+    "angular-jwt": "^0.0.9",
+    "angular-auto-validate": "^1.19.3"
   },
   "devDependencies": {}
 }
