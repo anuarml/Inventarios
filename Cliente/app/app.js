@@ -4,16 +4,19 @@
 angular.module('InvApp', [
   'ngRoute',
   'ui.bootstrap',
+  'jcs-autoValidate',
   'InvApp.BsTable',
   'InvApp.Modal',
   'InvApp.Auth',
-//  'InvApp.item',
   'InvApp.inv',
   'InvApp.User'
 ])
 .constant('APP', {
 	'ROUTES':{
 		'HOME':'/inv/list'
+	},
+	'SERVICE':{
+		'SERVER': 'http://192.168.96.80/inventarios/api'
 	}
 })
 .config(['$routeProvider','APP', function($routeProvider, APP) {
@@ -28,4 +31,17 @@ angular.module('InvApp', [
 			$location.path(AUTH.ROUTES.LOGIN);
 		});
 	};
-}]);
+}])
+.run([
+	'bootstrap3ElementModifier',
+	function (bootstrap3ElementModifier) {
+	      bootstrap3ElementModifier.enableValidationStateIcons(true);
+}])
+.run([
+    'defaultErrorMessageResolver',
+    function (defaultErrorMessageResolver) {
+        // To change the root resource file path
+        defaultErrorMessageResolver.setI18nFileRootPath('bower_components/angular-auto-validate/dist/lang');
+        defaultErrorMessageResolver.setCulture('es-Co');
+    }
+]);

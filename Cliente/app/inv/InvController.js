@@ -6,7 +6,7 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 	ROUTES: {
 		'LIST': '/inv/list',
 
-		'SERVICE_ART_AVAILABILITY': 'http://localhost/inventarios/api/inv/disponible'
+		'SERVICE_ART_AVAILABILITY': '/inv/disponible'
 	},
 	PARAM_NAMES: {
 		CODE: 'articulo',

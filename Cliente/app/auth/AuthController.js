@@ -5,16 +5,15 @@ angular.module('InvApp.Auth', ['ngRoute', 'angular-jwt'])
     .constant('AUTH', {
         'ROUTES':{
             'LOGIN':'/auth/login',
-            //'HOME':'/inv/list',
 
-            'SERVICE_LOGIN': 'http://localhost/inventarios/api/auth/login',
-            'SERVICE_LOGOUT': 'http://localhost/inventarios/api/auth/logout'
-        },
-        'HEADER': 'Authorization',
-        'TOKEN_NAME': 'auth_token',
-        'USER_PARAM_NAME': 'Usuario',
-        'PASS_PARAM_NAME': 'ThoWpassword'
-    })
+			'SERVICE_LOGIN': '/auth/login',
+			'SERVICE_LOGOUT': '/auth/logout'
+		},
+		'HEADER': 'Authorization',
+		'TOKEN_NAME': 'auth_token',
+		'USER_PARAM_NAME': 'Usuario',
+		'PASS_PARAM_NAME': 'ThoWpassword'
+	})
 
     .config(['$routeProvider', '$httpProvider', 'jwtInterceptorProvider', 'AUTH', 'AuthProvider','AuthInterceptorProvider',
         function($routeProvider, $httpProvider, jwtInterceptorProvider, AUTH, AuthProvider,AuthInterceptorProvider) {
