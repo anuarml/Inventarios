@@ -52,9 +52,9 @@ class InvController extends Controller
         $orderBy = $request->input('data.sort');
 
 
-        $grupo = $request->input('data.filter.Grupo');
-        $familia = $request->input('data.filter.Familia');
-        $linea = $request->input('data.filter.Linea');
+        $grupo = $request->input('search.grupo');
+        $familia = $request->input('search.familia');
+        $linea = $request->input('search.linea');
         //$fabricante = $request->input('data.filter.Fabricante');
 
         $usuario = Auth::user()->Usuario;

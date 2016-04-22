@@ -29,9 +29,20 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 
 	var notificationOptions = NotificationModal.create();
     var notification = notificationOptions.notification;
+    var ajaxFilters = {};
 
 	// Valor inicial de los filtros de busqueda
-	$scope.filters={articulo:'',descripcion:'',fabricante:'',empresa:''};
+	$scope.filters={
+		articulo:'',
+		descripcion:'',
+		fabricante:'',
+		grupo:'',
+		familia:'',
+		linea:'',
+		empresa:''
+	};
+
+	angular.copy($scope.filters, ajaxFilters);
 
 	// Search button initital state
 	$scope.isSearching = false;
@@ -54,7 +65,21 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 
 	// Establece las propiedades de la tabla
 	$scope.bsTableControl = Inv.getBsTableControl();
-	$scope.bsTableControl.options.ajaxOptions = {filters: $scope.filters};
+
+	$scope.bsTableControl.options.ajaxOptions = {
+			filters: $scope.filters,
+			complete: function(inv){
+				$scope.bsTableControl.setData(inv);
+				$scope.isSearching = false;
+			},
+			reject: function(error){
+				notification.title = 'No se pudo completar la búsqueda';
+	            notification.error = true;
+	            notification.setMessage(error);
+	            notificationOptions.open();
+	            $scope.isSearching = false;
+			}
+		};
 
 	// Realiza la consulta del disponible en inventario
 	/*$scope.searchInv = function(filters){
@@ -73,16 +98,7 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 
 	$scope.searchInv = function(filters){
 		$scope.isSearching = true;
-		Inv.search(filters).then(function(inv){
-			$scope.bsTableControl.setData(inv);
-			$scope.isSearching = false;
-		}, function(error){
-			notification.title = 'No se pudo completar la búsqueda';
-            notification.error = true;
-            notification.setMessage(error);
-            notificationOptions.open();
-            $scope.isSearching = false;
-		});
+		//angular.copy($scope.filters, ajaxFilters);
 	};
 
 }]);

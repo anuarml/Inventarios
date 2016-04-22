@@ -27,7 +27,7 @@ angular.module('InvApp.inv')
 			var options = bsTableControl.options;
 			var column;
 
-			options.filterControl = true;
+			options.filterControl = false;
 			options.url = APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY;
 			options.searchOnEnterKey = true;
 
@@ -43,11 +43,11 @@ angular.module('InvApp.inv')
                 .then(function(response){
                     inv = response.data.artDisponible;
 					//deferred.resolve(inv);
-					settings.success(response.data);
+					settings.complete && settings.complete(response.data) || settings.success(response.data);
                 }, function(error){
                     console.error(error.status, error.statusText);
                     //deferred.reject(error);
-                    settings.error(error);
+                    settings.reject && settings.reject(error) || settings.error(error);
                 });
 			};
 
