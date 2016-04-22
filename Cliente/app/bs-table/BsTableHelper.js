@@ -18,9 +18,10 @@ angular.module('InvApp.BsTable', [])
 		this.height = 600;
 		this.striped = true,
         this.pagination = true;
+        this.sidePagination='server';
         this.pageSize = 10;
         this.pageList = [5, 10, 25, 50, 100, 200];
-        this.search = true;
+        this.search = false;
         this.showColumns = true;
         this.showRefresh = false;
         this.minimumCountColumns = 2;

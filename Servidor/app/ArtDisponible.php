@@ -62,15 +62,23 @@ class ArtDisponible extends Model
      * @param string $plain
      * @return boolean
      */
-    public static function getDisponible($articulo,$descripcion,$fabricante,$empresa,$usuario){
+    public static function getDisponible($articulo,$descripcion,$fabricante,$grupo,$familia,$linea,
+                                         $empresa,$usuario,$order,$orderBy,$limit,$offset){
 
-        $stmt = \DB::getPdo()->prepare('EXEC dbo.spThoWArtDisponible ?, ?, ?, ?, ?');
+        $stmt = \DB::getPdo()->prepare('EXEC dbo.spThoWArtDisponible ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?');
 
         $stmt->bindParam(1, $articulo);
         $stmt->bindParam(2, $descripcion);
         $stmt->bindParam(3, $fabricante);
-        $stmt->bindParam(4, $empresa);
-        $stmt->bindParam(5, $usuario);
+        $stmt->bindParam(4, $grupo);
+        $stmt->bindParam(5, $familia);
+        $stmt->bindParam(6, $linea);
+        $stmt->bindParam(7, $empresa);
+        $stmt->bindParam(8, $usuario);
+        $stmt->bindParam(9, $order);
+        $stmt->bindParam(10, $orderBy);
+        $stmt->bindParam(11, $limit);
+        $stmt->bindParam(12, $offset);
 
         $stmt->execute();
 
@@ -78,5 +86,4 @@ class ArtDisponible extends Model
 
         return $artDisponible;
     }
-
 }

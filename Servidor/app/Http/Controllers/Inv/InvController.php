@@ -46,24 +46,52 @@ class InvController extends Controller
         $fabricante = $request->input('search.fabricante');
         $empresa = $request->input('search.empresa');
 
+        $limit = $request->input('data.limit');
+        $offset = $request->input('data.offset');
+        $order = $request->input('data.order');
+        $orderBy = $request->input('data.sort');
+
+
+        $grupo = $request->input('data.filter.Grupo');
+        $familia = $request->input('data.filter.Familia');
+        $linea = $request->input('data.filter.Linea');
+        //$fabricante = $request->input('data.filter.Fabricante');
+
         $usuario = Auth::user()->Usuario;
+        $total = 0;
         
-        $artDisponible = ArtDisponible::getDisponible($articulo,$descripcion,$fabricante,$empresa,$usuario);
+        //dd([$articulo,$descripcion,$fabricante,$grupo,$familia,$linea,
+         //                                     $empresa,$usuario,$order,$orderBy,$limit,$offset]);
+
+        $artDisponible = ArtDisponible::getDisponible($articulo,$descripcion,$fabricante,$grupo,$familia,$linea,
+                                                      $empresa,$usuario,$order,$orderBy,$limit,$offset);
+
+
 
         if( (array)$artDisponible === $artDisponible ) {
-
             if(count($artDisponible)==0) {
                 $status = 200;
-            } else if($artDisponible[0]->Status) {
-                $status = $artDisponible[0]->Status;
             } else {
-                $status = 500;
+                if( property_exists($artDisponible[0],'Status') ) {
+                    $status = $artDisponible[0]->Status;
+                } else {
+                    $status = 500;
+                }
+
+                if( property_exists($artDisponible[0],'Total') ) {
+                    $total = $artDisponible[0]->Total;
+                }
             }
         } else {
             $status = 500;
         }
 
-        return response()->json(compact('artDisponible'),$status);
+        $result = new \stdClass();
+
+        $result->total = $total;
+        $result->rows = $artDisponible;
+
+        return response()->json($result,$status);
     }
 
 }

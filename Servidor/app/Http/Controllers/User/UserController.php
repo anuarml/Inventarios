@@ -42,7 +42,7 @@ class UserController extends Controller
     {
         $usuario = Auth::user();
 
-        $empresas = $usuario->empresas;
+        $empresas = $usuario->empresas();
 
         return response()->json(compact('empresas'));
     }

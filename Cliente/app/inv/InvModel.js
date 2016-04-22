@@ -6,7 +6,7 @@ angular.module('InvApp.inv')
 		
 		var inv, bsTableControl;
 
-		function _fetch(deferred, filters){
+		function _fetch(deferred, filters, settings){
             var config = {headers: {'Content-Type': 'application/json'}};
 
             $http.post(APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: filters}, config)
@@ -28,10 +28,37 @@ angular.module('InvApp.inv')
 			var column;
 
 			options.filterControl = true;
+			options.url = APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY;
+			options.searchOnEnterKey = true;
+
+			options.ajax = function(settings){
+				if(settings.data && settings.data.filter){
+					settings.data.filter = JSON.parse(settings.data.filter);
+				}
+				console.log(settings);
+				var config = {headers: {'Content-Type': 'application/json'}};
+
+				$http.post(APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: settings.filters, data:settings.data}, config)
+
+                .then(function(response){
+                    inv = response.data.artDisponible;
+					//deferred.resolve(inv);
+					settings.success(response.data);
+                }, function(error){
+                    console.error(error.status, error.statusText);
+                    //deferred.reject(error);
+                    settings.error(error);
+                });
+			};
 
 			column = BsTableHelper.createBsTableColumns();
 			column.field = 'Articulo';
 			column.title = 'Artículo';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Almacen';
+			column.title = 'Almacén';
 			options.columns.push(column);
 
 			column = BsTableHelper.createBsTableColumns();
@@ -50,6 +77,12 @@ angular.module('InvApp.inv')
 			options.columns.push(column);
 
 			column = BsTableHelper.createBsTableColumns();
+			column.field = 'Fabricante';
+			column.title = 'Fabricante';
+			//column.filterControl = 'input';
+			options.columns.push(column);
+
+			column = BsTableHelper.createBsTableColumns();
 			column.field = 'Grupo';
 			column.title = 'Grupo';
 			column.filterControl = 'input';
@@ -64,12 +97,6 @@ angular.module('InvApp.inv')
 			column = BsTableHelper.createBsTableColumns();
 			column.field = 'Linea';
 			column.title = 'Línea';
-			column.filterControl = 'input';
-			options.columns.push(column);
-
-			column = BsTableHelper.createBsTableColumns();
-			column.field = 'Fabricante';
-			column.title = 'Fabricante';
 			column.filterControl = 'input';
 			options.columns.push(column);
 

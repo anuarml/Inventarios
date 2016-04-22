@@ -3,6 +3,7 @@
 namespace App;
 
 use Log;
+use App\UsuarioEmpresa;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -121,6 +122,8 @@ class User extends Authenticatable
     }
 
     public function empresas(){
-        return $this->hasManyThrough('App\Empresa','App\UsuarioEmpresa','Usuario','Empresa')->select(['Empresa.Empresa','Empresa.Nombre']);
+        //return $this->hasManyThrough('App\Empresa','App\UsuarioEmpresa','Usuario','Empresa')->select(['Empresa.Empresa','Empresa.Nombre']);
+        $user = $this->Usuario;
+        return UsuarioEmpresa::where('Usuario',$user)->get(['Empresa','Nombre']);
     }
 }

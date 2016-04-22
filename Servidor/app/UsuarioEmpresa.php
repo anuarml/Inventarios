@@ -18,7 +18,7 @@ class UsuarioEmpresa extends Model
      *
      * @var string
      */
-    protected $primaryKey = 'Empresa';
+    protected $primaryKey = 'Usuario';
 
     /**
      * Indicates if the model should be timestamped.
@@ -54,6 +54,6 @@ class UsuarioEmpresa extends Model
      *
      * @var array
      */
-    protected $visible = ['Empresa'];
+    protected $visible = ['Empresa','Nombre'];
 
 }

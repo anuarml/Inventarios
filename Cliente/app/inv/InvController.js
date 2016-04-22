@@ -54,11 +54,25 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 
 	// Establece las propiedades de la tabla
 	$scope.bsTableControl = Inv.getBsTableControl();
+	$scope.bsTableControl.options.ajaxOptions = {filters: $scope.filters};
 
 	// Realiza la consulta del disponible en inventario
+	/*$scope.searchInv = function(filters){
+		$scope.isSearching = true;
+		Inv.search(filters).then(function(inv){
+			$scope.bsTableControl.setData(inv);
+			$scope.isSearching = false;
+		}, function(error){
+			notification.title = 'No se pudo completar la búsqueda';
+            notification.error = true;
+            notification.setMessage(error);
+            notificationOptions.open();
+            $scope.isSearching = false;
+		});
+	};*/
+
 	$scope.searchInv = function(filters){
 		$scope.isSearching = true;
-
 		Inv.search(filters).then(function(inv){
 			$scope.bsTableControl.setData(inv);
 			$scope.isSearching = false;
