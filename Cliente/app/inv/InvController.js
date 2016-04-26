@@ -90,6 +90,7 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 	$scope.searchInv = function(filters){
 		$('.search input').hide();
 		$scope.isSearching = true;
+		isInitialized = true;
 
 		if(angular.equals($scope.filters, ajaxFilters)) {
 			$scope.isSearching = false;
