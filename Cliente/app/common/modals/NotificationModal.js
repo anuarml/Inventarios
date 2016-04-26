@@ -60,6 +60,10 @@ angular.module('InvApp.Modal',[])
             message = 'Error interno del servidor';
         }
 
+        if(status==403 && !message){
+            message = 'No tiene los permisos necesarios';
+        }
+
         if(!message) {
             message = statusText;
         }

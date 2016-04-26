@@ -24,12 +24,13 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 		});
 }])
 
-.controller('InvController', ['$scope', 'NotificationModal', 'Inv', 'Auth',
-	function($scope, NotificationModal, Inv, Auth) {
+.controller('InvController', ['$scope', '$http', 'NotificationModal', 'Inv', 'Auth', 'APP_SERVICE','INV',
+	function($scope, $http, NotificationModal, Inv, Auth, APP_SERVICE, INV) {
 
 	var notificationOptions = NotificationModal.create();
     var notification = notificationOptions.notification;
     var ajaxFilters = {};
+    var isInitialized = false;
 
 	// Valor inicial de los filtros de busqueda
 	$scope.filters={
@@ -42,11 +43,8 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 		empresa:''
 	};
 
-	angular.copy($scope.filters, ajaxFilters);
-
 	// Search button initital state
 	$scope.isSearching = false;
-
 	// Obtiene el usuario atenticado
 	var user = Auth.getUser();
 
@@ -66,39 +64,57 @@ angular.module('InvApp.inv', ['ngRoute', 'bsTable'])
 	// Establece las propiedades de la tabla
 	$scope.bsTableControl = Inv.getBsTableControl();
 
-	$scope.bsTableControl.options.ajaxOptions = {
-			filters: $scope.filters,
-			complete: function(inv){
-				$scope.bsTableControl.setData(inv);
-				$scope.isSearching = false;
-			},
-			reject: function(error){
-				notification.title = 'No se pudo completar la búsqueda';
+	$scope.bsTableControl.options.ajax = function (settings){
+		var config = {headers: {'Content-Type': 'application/json'}};
+
+		$http.post(APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {data:settings.data}, config)
+
+        .then(function(response){
+            //inv = response.data.artDisponible;
+			$scope.isSearching = false;
+			settings.success(response.data);
+        }, function(error){
+        	if(isInitialized) {
+	            console.error(error.status, error.statusText);
+	            notification.title = 'No se pudo completar la búsqueda';
 	            notification.error = true;
 	            notification.setMessage(error);
 	            notificationOptions.open();
 	            $scope.isSearching = false;
-			}
-		};
-
-	// Realiza la consulta del disponible en inventario
-	/*$scope.searchInv = function(filters){
-		$scope.isSearching = true;
-		Inv.search(filters).then(function(inv){
-			$scope.bsTableControl.setData(inv);
-			$scope.isSearching = false;
-		}, function(error){
-			notification.title = 'No se pudo completar la búsqueda';
-            notification.error = true;
-            notification.setMessage(error);
-            notificationOptions.open();
-            $scope.isSearching = false;
-		});
-	};*/
-
-	$scope.searchInv = function(filters){
-		$scope.isSearching = true;
-		//angular.copy($scope.filters, ajaxFilters);
+	        }
+            settings.error(error);
+        });
 	};
 
+	// Realiza la consulta del disponible en inventario
+	$scope.searchInv = function(filters){
+		$('.search input').hide();
+		$scope.isSearching = true;
+
+		if(angular.equals($scope.filters, ajaxFilters)) {
+			$scope.isSearching = false;
+			return false;
+		}
+
+		angular.copy($scope.filters, ajaxFilters);
+
+		var jsonFilters = JSON.stringify(ajaxFilters);
+		var searchInput = $('.search input');
+		searchInput.val(jsonFilters);
+		searchInput.keyup();
+	};
+
+
+	$(window).resize(function () {
+        var searchTable = $('#inv-table');
+
+        var tableHeight = 400;
+        if( $( window ).height()-15 > tableHeight){
+        	tableHeight = $( window ).height();
+        }
+
+        //searchTable.attr('data-height',tableHeight);
+        searchTable.bootstrapTable('resetView',{'height':tableHeight});
+        //searchTable.bootstrapTable('resetWidth');
+    });
 }]);

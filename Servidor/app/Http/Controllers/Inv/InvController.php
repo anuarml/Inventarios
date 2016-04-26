@@ -41,27 +41,36 @@ class InvController extends Controller
      */
     public function getArtExistencia(Request $request)
     {
-        $articulo = $request->input('search.articulo');
-        $descripcion = $request->input('search.descripcion');
-        $fabricante = $request->input('search.fabricante');
-        $empresa = $request->input('search.empresa');
-
         $limit = $request->input('data.limit');
         $offset = $request->input('data.offset');
         $order = $request->input('data.order');
         $orderBy = $request->input('data.sort');
+        $search = json_decode($request->input('data.search'));
 
+        //dd($search);
+        $articulo = null;
+        $descripcion = null;
+        $fabricante = null;
+        $grupo = null;
+        $familia = null;
+        $linea = null;
+        $empresa = null;
 
-        $grupo = $request->input('search.grupo');
-        $familia = $request->input('search.familia');
-        $linea = $request->input('search.linea');
-        //$fabricante = $request->input('data.filter.Fabricante');
+        if($search) {
+            $articulo = $search->articulo;
+            $descripcion = $search->descripcion;
+            $fabricante = $search->fabricante;
+            $grupo = $search->grupo;
+            $familia = $search->familia;
+            $linea = $search->linea;
+            $empresa = $search->empresa;
+        }
+
 
         $usuario = Auth::user()->Usuario;
         $total = 0;
         
-        //dd([$articulo,$descripcion,$fabricante,$grupo,$familia,$linea,
-         //                                     $empresa,$usuario,$order,$orderBy,$limit,$offset]);
+        //dd([$articulo,$descripcion,$fabricante,$grupo,$familia,$linea,$empresa,$usuario,$order,$orderBy,$limit,$offset]);
 
         $artDisponible = ArtDisponible::getDisponible($articulo,$descripcion,$fabricante,$grupo,$familia,$linea,
                                                       $empresa,$usuario,$order,$orderBy,$limit,$offset);

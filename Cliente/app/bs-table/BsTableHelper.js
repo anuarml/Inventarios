@@ -21,9 +21,10 @@ angular.module('InvApp.BsTable', [])
         this.sidePagination='server';
         this.pageSize = 10;
         this.pageList = [5, 10, 25, 50, 100, 200];
-        this.search = false;
+        this.search = true;
         this.showColumns = true;
         this.showRefresh = false;
+        this.showPaginationSwitch = false;
         this.minimumCountColumns = 2;
         this.clickToSelect = false;
         this.showToggle = true;

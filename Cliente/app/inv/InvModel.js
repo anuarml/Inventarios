@@ -22,20 +22,21 @@ angular.module('InvApp.inv')
             return deferred;
 		}
 
+
 		function createBsTableControl(){
 			var bsTableControl = BsTableHelper.createBsTableControl();
 			var options = bsTableControl.options;
 			var column;
 
 			options.filterControl = false;
-			options.url = APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY;
-			options.searchOnEnterKey = true;
+			//options.url = APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY;
+			options.searchOnEnterKey = false;
 
-			options.ajax = function(settings){
-				if(settings.data && settings.data.filter){
+			/*options.ajax = function(settings){
+				/*if(settings.data && settings.data.filter){
 					settings.data.filter = JSON.parse(settings.data.filter);
-				}
-				console.log(settings);
+				}*/
+			/*	//debugger;
 				var config = {headers: {'Content-Type': 'application/json'}};
 
 				$http.post(APP_SERVICE.SERVER+INV.ROUTES.SERVICE_ART_AVAILABILITY, {search: settings.filters, data:settings.data}, config)
@@ -43,13 +44,16 @@ angular.module('InvApp.inv')
                 .then(function(response){
                     inv = response.data.artDisponible;
 					//deferred.resolve(inv);
-					settings.complete && settings.complete(response.data) || settings.success(response.data);
+					console.log(settings.success);
+					//settings.complete && settings.complete(response.data) || settings.success(response.data);
+					settings.success(response.data);
                 }, function(error){
                     console.error(error.status, error.statusText);
                     //deferred.reject(error);
-                    settings.reject && settings.reject(error) || settings.error(error);
+                    //settings.reject && settings.reject(error) || settings.error(error);
+                    settings.error(error);
                 });
-			};
+			};*/
 
 			column = BsTableHelper.createBsTableColumns();
 			column.field = 'Articulo';
