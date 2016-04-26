@@ -30,6 +30,7 @@ angular.module('InvApp.BsTable', [])
         this.showToggle = true;
         this.maintainSelected = true;
         this.filterControl = false;
+        this.silentSort = false;
         this.columns = [];
 	}
 
